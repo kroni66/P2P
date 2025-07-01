@@ -1,8 +1,8 @@
-# Use NVIDIA CUDA runtime base image
-FROM nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu20.04
+# Use NVIDIA CUDA toolkit devel image with cuDNN
+FROM nvidia/cuda:11.7.1-cudnn8-devel-ubuntu20.04
 
-# Install Python
-RUN apt-get update && apt-get install -y python3-pip python3 && rm -rf /var/lib/apt/lists/*
+# Install Python and build tools
+RUN apt-get update && apt-get install -y python3-pip python3 build-essential && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
