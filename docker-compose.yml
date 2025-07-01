@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  broker:
+    build: ./broker
+    environment:
+      - N_WORKERS=${N_WORKERS:-2}
+    ports:
+      - "8000:8000"
+
+  worker1:
+    build: ./worker
+    environment:
+      - WORKER_ID=worker1
+      - BROKER_URL=http://broker:8000
+      - N_WORKERS=${N_WORKERS:-2}
+      - EPOCHS=${EPOCHS:-5}
+    depends_on:
+      - broker
+    device_requests:
+      - driver: nvidia
+        count: 1
+        capabilities: [gpu]
+
+  worker2:
+    build: ./worker
+    environment:
+      - WORKER_ID=worker2
+      - BROKER_URL=http://broker:8000
+      - N_WORKERS=${N_WORKERS:-2}
+      - EPOCHS=${EPOCHS:-5}
+    depends_on:
+      - broker
+    device_requests:
+      - driver: nvidia
+        count: 1
+        capabilities: [gpu]
